@@ -24,7 +24,7 @@ function parse_parameters() {
             -a|--arch|--architecture)
                 shift
                 case ${1} in
-                    arm32_v5|arm32_v6|arm32_v7|arm64|mips|mipsel|ppc32|ppc64|ppc64le|x86_64) ARCH=${1} ;;
+                    arm32_v5|arm32_v6|arm32_v7|arm64|i386|mips|mipsel|ppc32|ppc64|ppc64le|x86_64) ARCH=${1} ;;
                     *) die "Invalid --arch value '${1}'" ;;
                 esac ;;
 
@@ -125,6 +125,11 @@ function setup_qemu_args() {
                              -cpu cortex-a57
                              -machine virt )
             QEMU=( qemu-system-aarch64 ) ;;
+
+        i386)
+            KIMAGE=bzImage
+            QEMU_ARCH_ARGS=( -append "console=ttyS0${RDINIT}" )
+            QEMU=( qemu-system-i386 ) ;;
 
         mips|mipsel)
             KIMAGE=vmlinux
